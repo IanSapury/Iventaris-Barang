@@ -1,0 +1,11 @@
+{
+  "name": "sistem-inventaris-frontend",
+  "version": "1.0.0",
+  "description": "Frontend static files untuk Sistem Inventaris",
+  "scripts": {
+    "dev": "echo 'Gunakan live server atau http-server untuk development' && exit 1"
+  },
+  "keywords": ["inventaris", "frontend", "static"],
+  "author": "Ian Sapury",
+  "license": "MIT"
+}

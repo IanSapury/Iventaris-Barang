@@ -1,260 +1,181 @@
-# 📦 Sistem Inventaris Gudang UMKM
+# 📦 Sistem Inventaris Barang
 
-Sistem manajemen inventaris modern dengan multi-role (Admin & Kasir), dashboard analytics, Point of Sale (POS), dan tracking transaksi lengkap.
+Aplikasi CRUD Sistem Inventaris Barang dengan fitur Point of Sale (POS) menggunakan Node.js, Express, MySQL, dan Vanilla JavaScript.
 
-## ✨ Fitur Utama
+## 🏗️ Arsitektur (Monorepo)
+
+Project ini menggunakan **monorepo structure** dengan pemisahan frontend dan backend untuk deployment terpisah:
+
+```
+sistem-inventaris/
+├── frontend/          # Static files (HTML, CSS, JS) → Deploy ke Vercel
+│   ├── public/
+│   │   ├── css/
+│   │   ├── js/
+│   │   └── *.html
+│   ├── vercel.json
+│   └── README.md
+│
+├── backend/           # Node.js + Express API → Deploy ke Render
+│   ├── config/
+│   ├── middleware/
+│   ├── routes/
+│   ├── server.js
+│   ├── package.json
+│   ├── schema.sql
+│   └── README.md
+│
+└── README.md          # This file
+```
+
+## 🚀 Deployment Stack (FREE!)
+
+| Component | Platform | Tier | Keterangan |
+|-----------|----------|------|------------|
+| **Frontend** | [Vercel](https://vercel.com) | Free | Static site hosting |
+| **Backend** | [Render](https://render.com) | Free | Node.js hosting (sleep after 15min) |
+| **Database** | [Aiven](https://aiven.io) / [TiDB Cloud](https://tidbcloud.com) | Free | MySQL cloud (1GB) |
+
+## ⚡ Quick Start (Development)
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/IanSapury/sistem-inventaris.git
+cd sistem-inventaris
+```
+
+### 2. Setup Backend
+
+```bash
+cd backend
+npm install
+cp .env.example .env
+# Edit .env dengan kredensial database Anda
+npm run dev
+```
+
+Backend akan berjalan di `http://localhost:3000`
+
+### 3. Setup Frontend
+
+```bash
+cd frontend/public
+# Gunakan live server atau:
+python -m http.server 8000
+# Atau
+npx http-server -p 8000
+```
+
+Frontend akan berjalan di `http://localhost:8000`
+
+**Penting**: Update `frontend/public/js/config.js` untuk development:
+```javascript
+API_BASE_URL: 'http://localhost:3000/api'
+```
+
+## 📚 Dokumentasi Deployment
+
+Untuk deployment ke production (Vercel + Render + Cloud MySQL), silakan baca:
+
+- **[Frontend Deployment Guide](./frontend/README.md)** - Deploy ke Vercel
+- **[Backend Deployment Guide](./backend/README.md)** - Deploy ke Render & Setup Database MySQL Cloud
+
+## ✨ Fitur
 
 ### 🔐 Authentication & Authorization
 - Login sistem dengan JWT tokens
 - Multi-role: **Admin** (full access) dan **Kasir** (POS only)
 - Session management dengan cookie
-- Auto-redirect berdasarkan role
 
 ### 👨‍💼 Admin Features
 - **Dashboard Analytics**
   - Real-time statistics (pendapatan, stok, transaksi)
-  - Line chart transaksi 7 hari terakhir
-  - Bar chart top 5 produk terlaris
+  - Charts analytics (Chart.js)
   - Monitoring stok rendah
-  - History transaksi terakhir
-
+  
 - **Manajemen Barang**
   - CRUD barang lengkap
   - Filter & search real-time
   - Kategori produk
   - Tracking stok otomatis
 
-- **Transaksi Masuk**
-  - Pencatatan barang masuk ke gudang
+- **Transaksi Masuk & Keluar**
+  - Pencatatan transaksi masuk/keluar
   - Auto-update stok
-  - Detail supplier & item
-
-- **Transaksi Keluar (History)**
-  - Lihat semua riwayat penjualan
-  - Filter by date range
-  - Detail pembayaran lengkap
-  - Print invoice
+  - History lengkap
 
 ### 🛒 Kasir Features
 - **Point of Sale (POS)**
   - Interface modern & user-friendly
-  - Product grid dengan search & filter
   - Shopping cart real-time
-  - Auto-calculate subtotal & kembalian
-  - Validasi stok otomatis
-  - Generate & print struk digital
-  - Auto-generate nomor transaksi
-
-## 🎨 UI/UX Design
-
-### Color Palette
-- **Primary**: Biru Langit Modern (#3b82f6 - #60a5fa)
-- **Success**: Green (#10b981)
-- **Warning**: Orange (#f59e0b)
-- **Danger**: Red (#ef4444)
-- **Background**: Light Gray (#f1f5f9)
-
-### Design Features
-- ✅ Modern & Clean Interface
-- ✅ Smooth Transitions & Animations
-- ✅ Responsive Design (Desktop & Mobile)
-- ✅ Consistent Color Scheme
-- ✅ User-friendly Navigation
-- ✅ Toast Notifications
-- ✅ Loading States & Skeleton Screens
+  - Auto-calculate & validasi stok
+  - Generate nomor transaksi otomatis
 
 ## 🛠️ Tech Stack
 
-### Backend
-- **Node.js** + **Express.js**
-- **MySQL** (Database)
-- **bcrypt** (Password hashing)
-- **JWT** (Authentication)
-- **express-session** (Session management)
-
 ### Frontend
-- **Vanilla JavaScript** (ES6+)
-- **Bootstrap 5** (UI Framework)
-- **Chart.js** (Data visualization)
-- **Bootstrap Icons**
-- CSS3 dengan custom styling
+- HTML5, CSS3, JavaScript (Vanilla)
+- Bootstrap 5 (UI Framework)
+- Chart.js (Data visualization)
 
-## 📋 Prerequisites
+### Backend
+- Node.js + Express.js
+- MySQL (Database)
+- JWT (Authentication)
+- bcrypt (Password hashing)
 
-- Node.js >= 14.x
-- MySQL >= 5.7
-- npm atau yarn
-
-## 🚀 Installation & Setup
-
-### 1. Clone Repository
-```bash
-git clone <repository-url>
-cd sistem-inventaris
-```
-
-### 2. Install Dependencies
-```bash
-npm install
-```
-
-### 3. Database Setup
-
-**Buat database MySQL:**
-```bash
-mysql -u root -p
-```
-
-**Import schema:**
-```bash
-mysql -u root -p < schema.sql
-```
-
-Schema akan membuat:
-- Database `db_inventaris`
-- Tabel: `users`, `kategori`, `barang`, `transaksi_masuk`, `transaksi_keluar`, dll.
-- Data dummy untuk testing
-
-### 4. Environment Configuration
-
-Buat file `.env`:
-```env
-PORT=3000
-NODE_ENV=development
-
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=your_password
-DB_NAME=db_inventaris
-
-JWT_SECRET=inventaris-secret-key-2026
-```
-
-### 5. Generate Password Hash (Opsional)
-
-Jika ingin custom password untuk user:
-```bash
-node generate-password.js
-```
-
-Update password di database dengan hash yang di-generate.
-
-### 6. Run Application
-
-**Development mode:**
-```bash
-npm run dev
-```
-
-**Production mode:**
-```bash
-npm start
-```
-
-Server akan berjalan di `http://localhost:3000`
+### Libraries
+- `express` - Web framework
+- `mysql2` - MySQL client
+- `cors` - CORS middleware
+- `dotenv` - Environment variables
+- `jsonwebtoken` - JWT authentication
+- `cookie-parser` - Cookie parsing
 
 ## 👥 Default Users
+
+Schema SQL sudah menyediakan user default:
 
 ### Admin
 - **Username**: `admin`
 - **Password**: `password123`
 - **Access**: Full (Dashboard, CRUD, History, Reports)
 
-### Kasir 1
-- **Username**: `kasir1`
+### Kasir
+- **Username**: `kasir1` / `kasir2`
 - **Password**: `password123`
 - **Access**: POS Only
 
-### Kasir 2
-- **Username**: `kasir2`
-- **Password**: `password123`
-- **Access**: POS Only
+## 🔐 Security
+
+- ✅ Password hashing dengan bcrypt
+- ✅ JWT-based authentication
+- ✅ CORS configuration
+- ✅ SQL injection protection (parameterized queries)
+- ✅ Environment variables untuk kredensial sensitif
+- ✅ HTTP-only cookies
+- ✅ Role-based access control (RBAC)
 
 ## 📱 User Guide
 
 ### Login
-1. Buka `http://localhost:3000/login.html`
+1. Buka URL frontend Anda
 2. Masukkan username & password
 3. Sistem akan auto-redirect:
-   - **Admin** → Dashboard (`/dashboard.html`)
-   - **Kasir** → POS (`/pos.html`)
+   - **Admin** → Dashboard
+   - **Kasir** → POS
 
 ### Admin - Dashboard
 - Lihat statistik real-time
 - Monitor stok rendah
 - Analisis penjualan dengan charts
-- Quick access ke semua fitur
-
-### Admin - Manajemen Barang
-1. Klik menu "Data Barang"
-2. Gunakan search bar untuk cari produk
-3. Klik "Tambah Barang" untuk input baru
-4. Edit/Hapus produk (hanya admin)
 
 ### Kasir - Point of Sale
 1. Pilih produk dari grid
 2. Produk masuk ke cart otomatis
 3. Adjust quantity jika perlu
-4. Klik "Checkout"
-5. Input jumlah bayar
-6. Sistem hitung kembalian otomatis
-7. "Proses Pembayaran"
-8. Print struk (opsional)
-
-### Admin - History Transaksi
-1. Klik menu "Barang Keluar"
-2. Filter by date (hari ini/minggu/bulan)
-3. Search transaksi
-4. Klik icon mata untuk detail
-5. Print invoice jika perlu
-
-## 📁 Project Structure
-
-```
-sistem-inventaris/
-├── config/
-│   └── db.js                 # Database connection
-├── middleware/
-│   └── auth.js               # Authentication middleware
-├── routes/
-│   ├── auth.js               # Login, logout, register
-│   ├── barang.js             # CRUD barang
-│   ├── kategori.js           # CRUD kategori
-│   └── transaksi.js          # Transaksi masuk/keluar
-├── public/
-│   ├── css/
-│   │   ├── dashboard.css     # Dashboard styles
-│   │   ├── pos.css           # POS styles
-│   │   └── transaksi.css     # Transaction styles
-│   ├── js/
-│   │   ├── auth.js           # Auth utilities
-│   │   ├── api.js            # API wrapper
-│   │   ├── utils.js          # Helper functions
-│   │   ├── dashboard.js      # Dashboard logic
-│   │   ├── pos.js            # POS logic
-│   │   └── transaksi-keluar.js
-│   ├── login.html            # Login page
-│   ├── dashboard.html        # Admin dashboard
-│   ├── pos.html              # Kasir POS
-│   └── transaksi-keluar.html # Transaction history
-├── .env                      # Environment variables
-├── server.js                 # Express server
-├── schema.sql                # Database schema
-└── package.json              # Dependencies
-
-```
-
-## 🔒 Security Features
-
-- ✅ Password hashing with bcrypt (salt rounds: 10)
-- ✅ JWT token authentication
-- ✅ HTTP-only cookies
-- ✅ SQL injection prevention (prepared statements)
-- ✅ XSS protection (input sanitization)
-- ✅ CSRF protection dengan same-site cookies
-- ✅ Role-based access control (RBAC)
-- ✅ Session timeout (8 hours)
+4. Checkout dan proses pembayaran
 
 ## 🎯 API Endpoints
 
@@ -262,83 +183,90 @@ sistem-inventaris/
 - `POST /api/auth/login` - Login
 - `POST /api/auth/logout` - Logout
 - `GET /api/auth/me` - Get current user
-- `POST /api/auth/register` - Register user (admin only)
 
 ### Barang
 - `GET /api/barang` - Get all products
 - `GET /api/barang/search?q=keyword` - Search products
-- `GET /api/barang/:id` - Get product by ID
-- `POST /api/barang` - Create product (admin only)
-- `PUT /api/barang/:id` - Update product (admin only)
-- `DELETE /api/barang/:id` - Delete product (admin only)
+- `POST /api/barang` - Create product
+- `PUT /api/barang/:id` - Update product
+- `DELETE /api/barang/:id` - Delete product
 
 ### Kategori
 - `GET /api/kategori` - Get all categories
-- `POST /api/kategori` - Create category (admin only)
+- `POST /api/kategori` - Create category
 
 ### Transaksi
-- `GET /api/transaksi/masuk` - Get all incoming transactions
-- `POST /api/transaksi/masuk` - Create incoming transaction (admin only)
-- `GET /api/transaksi/keluar` - Get all outgoing transactions
-- `POST /api/transaksi/keluar` - Create outgoing transaction (kasir & admin)
+- `GET /api/transaksi/masuk` - Get incoming transactions
+- `POST /api/transaksi/masuk` - Create incoming transaction
+- `GET /api/transaksi/keluar` - Get outgoing transactions
+- `POST /api/transaksi/keluar` - Create outgoing transaction
 - `GET /api/transaksi/stats` - Get dashboard statistics
-- `GET /api/transaksi/generate-nomor/:tipe` - Generate transaction number
 
 ## 🐛 Troubleshooting
 
-### Database Connection Error
-```bash
-# Check MySQL service
-# Windows:
-services.msc → MySQL → Start
+### Development Lokal
 
-# Verify credentials in .env
+**Database Connection Error:**
+```bash
+# Check MySQL service & verify credentials in .env
 DB_HOST=localhost
 DB_USER=root
-DB_PASSWORD=your_actual_password
+DB_PASSWORD=your_password
 ```
 
-### Port Already in Use
+**Port Already in Use:**
 ```bash
 # Change port in .env
 PORT=3001
 ```
 
-### Login Failed
-- Pastikan database sudah di-import
-- Check password hash di tabel `users`
-- Regenerate password hash jika perlu
+### Production (Render/Vercel)
 
-### Stok Tidak Update
-- Check console untuk error
-- Verifikasi transaction di database
-- Pastikan foreign key constraints aktif
+**CORS Error:**
+- Pastikan `FRONTEND_URL` di Render environment variables sesuai dengan URL Vercel Anda
+- Format: `https://your-app.vercel.app` (tanpa trailing slash)
+
+**Backend Not Responding (Render Free Tier):**
+- Service sleep setelah 15 menit tidak ada request
+- Cold start pertama memakan waktu ~30 detik
+- Gunakan [UptimeRobot](https://uptimerobot.com/) untuk ping berkala
+
+**Database Connection Failed (Cloud MySQL):**
+- Pastikan kredensial database di Render environment benar
+- Aiven/TiDB biasanya allow all IPs, tapi cek whitelist jika perlu
+- Test koneksi dengan MySQL client terlebih dahulu
 
 ## 📈 Future Enhancements
 
 - [ ] Export laporan ke Excel/PDF
-- [ ] Multi-warehouse support
 - [ ] Barcode scanner integration
 - [ ] Email notifications
 - [ ] Advanced reporting & analytics
-- [ ] Inventory forecasting
 - [ ] Mobile app (React Native)
-- [ ] Real-time notifications (WebSocket)
+- [ ] Multi-warehouse support
 
-## 🤝 Contributing
+## 👨‍💻 Author
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+**Ian Sapury**
+- GitHub: [@IanSapury](https://github.com/IanSapury)
 
 ## 📄 License
 
-MIT License - feel free to use for your projects
+MIT License - Silakan gunakan untuk keperluan apapun
 
-## 👨‍💻 Developer
+## 🤝 Contributing
 
-Developed with ❤️ for UMKM Indonesia
+Pull requests are welcome! Untuk perubahan besar, mohon buat issue terlebih dahulu.
+
+## 📞 Support
+
+Jika ada pertanyaan atau issue:
+1. Baca [Frontend README](./frontend/README.md) untuk deployment Vercel
+2. Baca [Backend README](./backend/README.md) untuk deployment Render
+3. Buat [GitHub Issue](https://github.com/IanSapury/sistem-inventaris/issues) jika masih ada masalah
 
 ---
 
-**Note**: Sistem ini didesain khusus untuk UMKM dengan fokus pada kemudahan penggunaan dan efisiensi operasional.
+**Happy Coding! 🚀**
 
-Untuk bantuan atau pertanyaan, silakan buka issue di repository.
+*Sistem ini didesain untuk UMKM dengan fokus pada kemudahan deployment dan efisiensi operasional.*

@@ -4,7 +4,7 @@
 // ============================================================
 
 const API = {
-  baseURL: '/api',
+  baseURL: window.CONFIG ? window.CONFIG.API_BASE_URL : '/api',
 
   /**
    * Generic fetch with auth header

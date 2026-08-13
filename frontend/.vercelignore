@@ -1,0 +1,4 @@
+# Ignore files not needed for deployment
+README.md
+.git
+.gitignore

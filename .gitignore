@@ -3,6 +3,8 @@ node_modules/
 
 # Environment variables (jangan pernah di-commit)
 .env
+.env.local
+.env.production
 
 # OS files
 .DS_Store
@@ -12,6 +14,18 @@ Thumbs.db
 *.log
 logs/
 
-# Build output (jika ada)
+# Build output
 dist/
 build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Vercel
+.vercel
+
+# Render
+.render/

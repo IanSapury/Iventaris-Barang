@@ -22,15 +22,18 @@ const PORT = process.env.PORT || 3000;
 // Middleware global
 // ============================================================
 app.use(cors({
-  origin: true, // Allow all origins in development
+  origin: process.env.FRONTEND_URL || true, // Allow frontend URL dari .env
   credentials: true // Allow cookies
 }));
 app.use(express.json());          // parse body JSON
 app.use(express.urlencoded({ extended: true })); // parse form URL-encoded
 app.use(cookieParser());          // parse cookies
 
-// Sajikan file statis dari folder public/ (HTML, CSS, JS)
-app.use(express.static(path.join(__dirname, 'public')));
+// Sajikan file statis dari folder public/ (HTML, CSS, JS) - HANYA untuk development
+// Untuk production, frontend akan di-host terpisah di Vercel
+if (process.env.NODE_ENV !== 'production') {
+  app.use(express.static(path.join(__dirname, 'public')));
+}
 
 // ============================================================
 // Routing API
@@ -40,9 +43,14 @@ app.use('/api/barang',    barangRouter);
 app.use('/api/kategori',  kategoriRouter);
 app.use('/api/transaksi', transaksiRouter);
 
-// Root redirect ke login
+// Root health check untuk Render
 app.get('/', (req, res) => {
-  res.redirect('/login.html');
+  res.json({ 
+    success: true, 
+    message: 'Sistem Inventaris API berjalan', 
+    version: '1.0.0',
+    environment: process.env.NODE_ENV || 'development'
+  });
 });
 
 // ============================================================
