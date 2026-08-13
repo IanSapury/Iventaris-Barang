@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Environment variables (jangan pernah di-commit)
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Build output (jika ada)
+dist/
+build/

@@ -1,0 +1,293 @@
+/* ============================================================
+   style.css — Sistem Inventaris Barang
+   Custom styles di atas Bootstrap 5
+   ============================================================ */
+
+/* ----- Base ----- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f0f4f8;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: #1e293b;
+  min-height: 100vh;
+}
+
+/* ----- Navbar ----- */
+.navbar {
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%) !important;
+}
+
+/* ----- Stat Cards ----- */
+.stat-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  border-radius: 12px !important;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10) !important;
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  border-radius: 10px !important;
+}
+
+/* ----- Cards ----- */
+.card {
+  border-radius: 12px !important;
+}
+
+.card-header {
+  border-radius: 12px 12px 0 0 !important;
+}
+
+/* ----- Form ----- */
+.form-control,
+.form-select {
+  border-radius: 8px;
+  border-color: #cbd5e1;
+  font-size: 0.875rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.form-label {
+  font-size: 0.8rem;
+  color: #475569;
+  margin-bottom: 5px;
+}
+
+.input-group-text {
+  border-radius: 8px 0 0 8px !important;
+  border-color: #cbd5e1;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.input-group .form-control {
+  border-radius: 0 8px 8px 0 !important;
+}
+
+/* ----- Buttons ----- */
+.btn {
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  border: none;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.35);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* ----- Table ----- */
+.table {
+  font-size: 0.85rem;
+  margin-bottom: 0;
+}
+
+.table thead th {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748b;
+  background-color: #f8fafc !important;
+  border-bottom: 2px solid #e2e8f0;
+  padding: 12px 10px;
+  white-space: nowrap;
+}
+
+.table tbody tr {
+  transition: background-color 0.1s;
+}
+
+.table tbody tr:hover {
+  background-color: #f0f7ff !important;
+}
+
+.table tbody td {
+  padding: 10px 10px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+/* kode barang monospace */
+.kode-barang {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #334155;
+  white-space: nowrap;
+}
+
+/* harga */
+.harga-cell {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* stok badge */
+.stok-badge {
+  display: inline-block;
+  min-width: 48px;
+  text-align: center;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.stok-ok    { background: #dcfce7; color: #15803d; }
+.stok-low   { background: #fef9c3; color: #92400e; }
+.stok-empty { background: #fee2e2; color: #b91c1c; }
+
+/* kategori badge */
+.kat-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: #eff6ff;
+  color: #1d4ed8;
+  white-space: nowrap;
+}
+
+/* ----- Aksi Buttons di tabel ----- */
+.btn-aksi {
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  line-height: 1;
+}
+
+.btn-aksi + .btn-aksi {
+  margin-left: 4px;
+}
+
+/* ----- Search Bar ----- */
+#search-input {
+  font-size: 0.85rem;
+}
+
+#search-input:focus {
+  border-color: #2563eb;
+  box-shadow: none;
+}
+
+/* ----- Toast ----- */
+.toast {
+  min-width: 280px;
+  border-radius: 10px;
+  font-size: 0.875rem;
+}
+
+.toast.toast-success { background-color: #16a34a; color: #fff; }
+.toast.toast-error   { background-color: #dc2626; color: #fff; }
+.toast.toast-info    { background-color: #2563eb; color: #fff; }
+
+/* ----- Loading Spinner ----- */
+#table-loading {
+  padding: 2.5rem;
+}
+
+/* ----- Empty State ----- */
+#table-empty {
+  padding: 3rem 1rem;
+}
+
+/* ----- Modal ----- */
+.modal-content {
+  border-radius: 14px !important;
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748b;
+  margin-bottom: 2px;
+}
+
+.detail-value {
+  font-size: 0.9rem;
+  color: #1e293b;
+  word-break: break-word;
+}
+
+/* ----- Row highlight saat baru ditambah/diedit ----- */
+@keyframes rowFlash {
+  0%   { background-color: #bfdbfe; }
+  100% { background-color: transparent; }
+}
+
+.row-flash {
+  animation: rowFlash 1.2s ease-out;
+}
+
+/* ----- Edit mode form ----- */
+body.edit-mode .card:first-of-type {
+  border: 2px solid #f59e0b !important;
+}
+
+body.edit-mode #form-title {
+  color: #d97706;
+}
+
+/* ----- Responsif ----- */
+@media (max-width: 575.98px) {
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+
+  .stat-card .fw-bold.fs-4 {
+    font-size: 1.1rem !important;
+  }
+
+  .table thead th,
+  .table tbody td {
+    padding: 8px 6px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .container-fluid {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Transaksi Barang Masuk - Sistem Inventaris UMKM</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/transaksi.css" />
+</head>
+<body>
+  
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <i class="bi bi-box-seam"></i>
+        <span>Inventaris</span>
+      </div>
+    </div>
+
+    <div class="sidebar-menu">
+      <a href="/dashboard.html" class="menu-item">
+        <i class="bi bi-speedometer2"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="/barang.html" class="menu-item">
+        <i class="bi bi-boxes"></i>
+        <span>Data Barang</span>
+      </a>
+      <a href="/transaksi-masuk.html" class="menu-item active">
+        <i class="bi bi-arrow-down-circle"></i>
+        <span>Barang Masuk</span>
+      </a>
+      <a href="/transaksi-keluar.html" class="menu-item">
+        <i class="bi bi-arrow-up-circle"></i>
+        <span>Barang Keluar</span>
+      </a>
+      <a href="/laporan.html" class="menu-item">
+        <i class="bi bi-file-earmark-bar-graph"></i>
+        <span>Laporan</span>
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">
+          <i class="bi bi-person-circle"></i>
+        </div>
+        <div class="user-details">
+          <div class="user-name" id="user-name">Admin</div>
+          <div class="user-role">Administrator</div>
+        </div>
+      </div>
+      <button class="btn-logout" id="btn-logout">
+        <i class="bi bi-box-arrow-right"></i>
+        <span>Logout</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content" id="main-content">
+    
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-toggle" id="mobile-toggle">
+          <i class="bi bi-list"></i>
+        </button>
+        <h1 class="page-title">
+          <i class="bi bi-arrow-down-circle me-2"></i>
+          Transaksi Barang Masuk
+        </h1>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-primary" id="btn-add-transaksi">
+          <i class="bi bi-plus-circle me-2"></i>
+          Tambah Transaksi Masuk
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats Summary -->
+    <div class="stats-grid" style="padding: 24px 32px;">
+      <div class="stat-card-mini">
+        <div class="stat-icon-mini bg-primary">
+          <i class="bi bi-arrow-down-circle"></i>
+        </div>
+        <div>
+          <div class="stat-label-mini">Total Transaksi</div>
+          <div class="stat-value-mini" id="stat-total">0</div>
+        </div>
+      </div>
+      <div class="stat-card-mini">
+        <div class="stat-icon-mini bg-success">
+          <i class="bi bi-box-seam"></i>
+        </div>
+        <div>
+          <div class="stat-label-mini">Total Item Masuk</div>
+          <div class="stat-value-mini" id="stat-items">0</div>
+        </div>
+      </div>
+      <div class="stat-card-mini">
+        <div class="stat-icon-mini bg-info">
+          <i class="bi bi-calendar-week"></i>
+        </div>
+        <div>
+          <div class="stat-label-mini">Bulan Ini</div>
+          <div class="stat-value-mini" id="stat-month">0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter & Search -->
+    <div class="filter-section">
+      <div class="search-box-table">
+        <i class="bi bi-search"></i>
+        <input 
+          type="text" 
+          id="search-transaksi" 
+          placeholder="Cari nomor transaksi, supplier..."
+          autocomplete="off"
+        />
+      </div>
+      <div class="filter-actions">
+        <button class="btn-filter" id="btn-filter-today">
+          <i class="bi bi-calendar-day"></i>
+          Hari Ini
+        </button>
+        <button class="btn-filter" id="btn-filter-month">
+          <i class="bi bi-calendar-month"></i>
+          Bulan Ini
+        </button>
+        <button class="btn-filter active" id="btn-filter-all">
+          <i class="bi bi-calendar-range"></i>
+          Semua
+        </button>
+      </div>
+    </div>
+
+    <!-- Transaksi Table -->
+    <div class="card" style="margin: 0 32px 32px;">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr>
+                <th style="width: 40px">#</th>
+                <th style="width: 180px">No. Transaksi</th>
+                <th style="width: 160px">Tanggal</th>
+                <th>Supplier</th>
+                <th style="width: 80px">Item</th>
+                <th>Admin</th>
+                <th class="text-center" style="width: 100px">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-transaksi">
+              <tr>
+                <td colspan="7" class="text-center py-4">
+                  <div class="spinner-border text-primary"></div>
+                  <p class="mt-2 mb-0 text-muted">Memuat data...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer">
+        <small class="text-muted" id="info-count">0 transaksi</small>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Modal Detail -->
+  <div class="modal fade" id="modal-detail" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="bi bi-receipt me-2"></i>
+            Detail Transaksi Masuk
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="modal-detail-body"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Form Transaksi Masuk -->
+  <div class="modal fade" id="modal-form" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="bi bi-plus-circle me-2"></i>
+            Tambah Transaksi Barang Masuk
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="form-transaksi">
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label class="form-label">No. Transaksi</label>
+                <input type="text" class="form-control" id="f-nomor" readonly />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Tanggal</label>
+                <input type="datetime-local" class="form-control" id="f-tanggal" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Supplier</label>
+                <input type="text" class="form-control" id="f-supplier" placeholder="Nama supplier" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Keterangan</label>
+                <input type="text" class="form-control" id="f-keterangan" placeholder="Keterangan (opsional)" />
+              </div>
+            </div>
+
+            <h6 class="mb-3">Tambah Item</h6>
+            <div class="row g-2 mb-3">
+              <div class="col-md-5">
+                <select class="form-select" id="f-barang">
+                  <option value="">Pilih Barang</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <input type="number" class="form-control" id="f-jumlah" placeholder="Jumlah" min="1" />
+              </div>
+              <div class="col-md-3">
+                <input type="number" class="form-control" id="f-harga-beli" placeholder="Harga Beli" min="0" />
+              </div>
+              <div class="col-md-2">
+                <button type="button" class="btn btn-primary w-100" id="btn-add-item">
+                  <i class="bi bi-plus"></i> Tambah
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Barang</th>
+                    <th>Jumlah</th>
+                    <th>Harga Beli</th>
+                    <th>Subtotal</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-items">
+                  <tr>
+                    <td colspan="5" class="text-center text-muted">Belum ada item</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-primary" id="btn-save">
+            <i class="bi bi-check-circle me-2"></i>
+            Simpan Transaksi
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/transaksi-masuk.js"></script>
+</body>
+</html>

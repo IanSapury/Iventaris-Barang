@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistem Inventaris UMKM - Redirecting...</title>
+  <script>
+    // Auto-redirect to login page
+    window.location.href = '/login.html';
+  </script>
+</head>
+<body>
+  <p style="text-align: center; margin-top: 50px; font-family: sans-serif;">
+    Redirecting to login page...
+  </p>
+</body>
+</html>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar navbar-dark bg-primary shadow-sm">
+  <div class="container-fluid px-4">
+    <span class="navbar-brand fw-bold fs-5">
+      <i class="bi bi-box-seam me-2"></i>Sistem Inventaris Barang
+    </span>
+    <span class="text-white-50 small d-none d-md-inline">
+      <i class="bi bi-circle-fill text-success me-1" style="font-size:.55rem"></i>
+      Server Connected
+    </span>
+  </div>
+</nav>
+
+<!-- ===== NOTIFIKASI TOAST ===== -->
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index:1100">
+  <div id="toast" class="toast align-items-center border-0" role="alert" aria-live="assertive">
+    <div class="d-flex">
+      <div class="toast-body fw-semibold" id="toast-msg">Pesan notifikasi</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="container-fluid px-4 py-4">
+
+  <!-- STATS CARDS -->
+  <div class="row g-3 mb-4" id="stat-cards">
+    <div class="col-6 col-md-3">
+      <div class="card stat-card border-0 shadow-sm h-100">
+        <div class="card-body d-flex align-items-center gap-3">
+          <div class="stat-icon bg-primary-subtle text-primary rounded-3">
+            <i class="bi bi-boxes"></i>
+          </div>
+          <div>
+            <div class="text-muted small">Total Jenis</div>
+            <div class="fw-bold fs-4" id="stat-total">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card stat-card border-0 shadow-sm h-100">
+        <div class="card-body d-flex align-items-center gap-3">
+          <div class="stat-icon bg-success-subtle text-success rounded-3">
+            <i class="bi bi-stack"></i>
+          </div>
+          <div>
+            <div class="text-muted small">Total Stok</div>
+            <div class="fw-bold fs-4" id="stat-stok">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card stat-card border-0 shadow-sm h-100">
+        <div class="card-body d-flex align-items-center gap-3">
+          <div class="stat-icon bg-warning-subtle text-warning rounded-3">
+            <i class="bi bi-exclamation-triangle"></i>
+          </div>
+          <div>
+            <div class="text-muted small">Stok Rendah</div>
+            <div class="fw-bold fs-4" id="stat-low">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card stat-card border-0 shadow-sm h-100">
+        <div class="card-body d-flex align-items-center gap-3">
+          <div class="stat-icon bg-info-subtle text-info rounded-3">
+            <i class="bi bi-tags"></i>
+          </div>
+          <div>
+            <div class="text-muted small">Kategori</div>
+            <div class="fw-bold fs-4" id="stat-kat">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+
+    <!-- ===== KOLOM KIRI: FORM ===== -->
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-header bg-white border-bottom py-3 d-flex align-items-center justify-content-between">
+          <h6 class="mb-0 fw-semibold" id="form-title">
+            <i class="bi bi-plus-circle me-2 text-primary"></i>Tambah Barang
+          </h6>
+          <button class="btn btn-sm btn-outline-secondary d-none" id="btn-cancel" onclick="cancelEdit()">
+            <i class="bi bi-x-lg"></i> Batal
+          </button>
+        </div>
+        <div class="card-body">
+          <form id="form-barang" novalidate>
+            <!-- ID tersembunyi untuk mode edit -->
+            <input type="hidden" id="f-id" />
+
+            <!-- Kode Barang -->
+            <div class="mb-3">
+              <label for="f-kode" class="form-label fw-medium">Kode Barang <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="f-kode" placeholder="Contoh: BRG-011" maxlength="50" required />
+              <div class="invalid-feedback">Kode barang wajib diisi.</div>
+            </div>
+
+            <!-- Nama Barang -->
+            <div class="mb-3">
+              <label for="f-nama" class="form-label fw-medium">Nama Barang <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="f-nama" placeholder="Nama barang" maxlength="150" required />
+              <div class="invalid-feedback">Nama barang wajib diisi.</div>
+            </div>
+
+            <!-- Kategori -->
+            <div class="mb-3">
+              <label for="f-kat" class="form-label fw-medium">Kategori <span class="text-danger">*</span></label>
+              <select class="form-select" id="f-kat" required>
+                <option value="">— Pilih Kategori —</option>
+              </select>
+              <div class="invalid-feedback">Pilih kategori terlebih dahulu.</div>
+            </div>
+
+            <!-- Stok & Satuan -->
+            <div class="row g-2 mb-3">
+              <div class="col-7">
+                <label for="f-stok" class="form-label fw-medium">Stok <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" id="f-stok" placeholder="0" min="0" required />
+                <div class="invalid-feedback">Stok wajib diisi (min 0).</div>
+              </div>
+              <div class="col-5">
+                <label for="f-satuan" class="form-label fw-medium">Satuan</label>
+                <select class="form-select" id="f-satuan">
+                  <option value="pcs">pcs</option>
+                  <option value="unit">unit</option>
+                  <option value="rim">rim</option>
+                  <option value="lusin">lusin</option>
+                  <option value="kg">kg</option>
+                  <option value="liter">liter</option>
+                  <option value="box">box</option>
+                  <option value="pak">pak</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Harga -->
+            <div class="mb-3">
+              <label for="f-harga" class="form-label fw-medium">Harga (Rp) <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <span class="input-group-text">Rp</span>
+                <input type="number" class="form-control" id="f-harga" placeholder="0" min="0" step="100" required />
+              </div>
+              <div class="invalid-feedback d-block" id="harga-feedback" style="display:none!important"></div>
+            </div>
+
+            <!-- Keterangan -->
+            <div class="mb-4">
+              <label for="f-ket" class="form-label fw-medium">Keterangan</label>
+              <textarea class="form-control" id="f-ket" rows="2" placeholder="Deskripsi singkat (opsional)" maxlength="500"></textarea>
+            </div>
+
+            <!-- Tombol Submit -->
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary" id="btn-submit">
+                <i class="bi bi-plus-lg me-1"></i>
+                <span id="btn-submit-text">Tambah Barang</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== KOLOM KANAN: TABEL ===== -->
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom py-3">
+          <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-2">
+            <h6 class="mb-0 fw-semibold">
+              <i class="bi bi-table me-2 text-primary"></i>Daftar Barang
+            </h6>
+            <!-- Search Bar -->
+            <div class="input-group input-group-sm" style="max-width:280px">
+              <span class="input-group-text bg-white"><i class="bi bi-search text-muted"></i></span>
+              <input type="text" class="form-control border-start-0" id="search-input"
+                     placeholder="Cari kode, nama, kategori..." />
+              <button class="btn btn-outline-secondary" id="btn-clear-search" title="Hapus pencarian">
+                <i class="bi bi-x"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body p-0">
+          <!-- Loading Skeleton -->
+          <div id="table-loading" class="p-4 text-center text-muted">
+            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+            Memuat data...
+          </div>
+
+          <!-- Empty State -->
+          <div id="table-empty" class="p-5 text-center text-muted d-none">
+            <i class="bi bi-inbox display-5 d-block mb-2 opacity-25"></i>
+            <p class="mb-0">Belum ada data barang</p>
+          </div>
+
+          <!-- Tabel Data -->
+          <div class="table-responsive d-none" id="table-wrapper">
+            <table class="table table-hover align-middle mb-0" id="tabel-barang">
+              <thead class="table-light">
+                <tr>
+                  <th class="ps-3" style="width:40px">#</th>
+                  <th style="width:110px">Kode</th>
+                  <th>Nama Barang</th>
+                  <th>Kategori</th>
+                  <th class="text-end" style="width:70px">Stok</th>
+                  <th class="text-end" style="width:120px">Harga</th>
+                  <th class="text-center" style="width:100px">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-barang">
+                <!-- diisi oleh JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Footer info jumlah data -->
+        <div class="card-footer bg-white border-top d-flex justify-content-between align-items-center py-2 px-3">
+          <small class="text-muted" id="info-count">0 data</small>
+          <button class="btn btn-sm btn-outline-primary" onclick="loadBarang()">
+            <i class="bi bi-arrow-clockwise me-1"></i>Refresh
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /row -->
+</div><!-- /container -->
+
+<!-- ===== MODAL DETAIL ===== -->
+<div class="modal fade" id="modal-detail" tabindex="-1" aria-labelledby="modal-detail-label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header border-bottom">
+        <h6 class="modal-title fw-semibold" id="modal-detail-label">
+          <i class="bi bi-info-circle me-2 text-primary"></i>Detail Barang
+        </h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="modal-detail-body">
+        <!-- diisi oleh JavaScript -->
+      </div>
+      <div class="modal-footer border-top">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Custom JS -->
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Admin - Sistem Inventaris UMKM</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+  
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <i class="bi bi-box-seam"></i>
+        <span>Inventaris</span>
+      </div>
+      <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="bi bi-list"></i>
+      </button>
+    </div>
+
+    <div class="sidebar-menu">
+      <a href="/dashboard.html" class="menu-item active">
+        <i class="bi bi-speedometer2"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="/barang.html" class="menu-item">
+        <i class="bi bi-boxes"></i>
+        <span>Data Barang</span>
+      </a>
+      <a href="/transaksi-masuk.html" class="menu-item">
+        <i class="bi bi-arrow-down-circle"></i>
+        <span>Barang Masuk</span>
+      </a>
+      <a href="/transaksi-keluar.html" class="menu-item">
+        <i class="bi bi-arrow-up-circle"></i>
+        <span>Barang Keluar</span>
+      </a>
+      <a href="/laporan.html" class="menu-item">
+        <i class="bi bi-file-earmark-bar-graph"></i>
+        <span>Laporan</span>
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">
+          <i class="bi bi-person-circle"></i>
+        </div>
+        <div class="user-details">
+          <div class="user-name" id="user-name">Admin</div>
+          <div class="user-role">Administrator</div>
+        </div>
+      </div>
+      <button class="btn-logout" id="btn-logout">
+        <i class="bi bi-box-arrow-right"></i>
+        <span>Logout</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content" id="main-content">
+    
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-toggle" id="mobile-toggle">
+          <i class="bi bi-list"></i>
+        </button>
+        <h1 class="page-title">Dashboard</h1>
+      </div>
+      <div class="topbar-right">
+        <div class="date-time" id="datetime"></div>
+        <button class="btn-refresh" id="btn-refresh" title="Refresh Data">
+          <i class="bi bi-arrow-clockwise"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon bg-primary">
+          <i class="bi bi-currency-dollar"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-label">Pendapatan Hari Ini</div>
+          <div class="stat-value" id="stat-pendapatan-hari">Rp 0</div>
+          <div class="stat-footer">
+            <span id="stat-transaksi-hari">0</span> transaksi
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon bg-success">
+          <i class="bi bi-graph-up-arrow"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-label">Pendapatan Bulan Ini</div>
+          <div class="stat-value" id="stat-pendapatan-bulan">Rp 0</div>
+          <div class="stat-footer">
+            <span id="stat-transaksi-bulan">0</span> transaksi
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon bg-warning">
+          <i class="bi bi-boxes"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-label">Total Barang</div>
+          <div class="stat-value" id="stat-total-barang">0</div>
+          <div class="stat-footer">
+            <span id="stat-stok-rendah">0</span> stok rendah
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon bg-info">
+          <i class="bi bi-people"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-label">Kategori Produk</div>
+          <div class="stat-value" id="stat-kategori">0</div>
+          <div class="stat-footer">
+            <span id="stat-jenis">0</span> jenis barang
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="charts-row">
+      <div class="card">
+        <div class="card-header">
+          <h5>
+            <i class="bi bi-graph-up me-2"></i>
+            Transaksi 7 Hari Terakhir
+          </h5>
+        </div>
+        <div class="card-body">
+          <canvas id="chartTransaksi" height="80"></canvas>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h5>
+            <i class="bi bi-trophy me-2"></i>
+            Top 5 Produk Terlaris
+          </h5>
+        </div>
+        <div class="card-body">
+          <canvas id="chartProduk" height="80"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tables Row -->
+    <div class="tables-row">
+      <!-- Stok Rendah -->
+      <div class="card">
+        <div class="card-header">
+          <h5>
+            <i class="bi bi-exclamation-triangle text-warning me-2"></i>
+            Stok Rendah
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Kode</th>
+                  <th>Nama Barang</th>
+                  <th>Stok</th>
+                  <th>Kategori</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-stok-rendah">
+                <tr>
+                  <td colspan="4" class="text-center text-muted">
+                    <div class="py-3">
+                      <div class="spinner-border spinner-border-sm me-2"></div>
+                      Memuat data...
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transaksi Terakhir -->
+      <div class="card">
+        <div class="card-header">
+          <h5>
+            <i class="bi bi-clock-history text-primary me-2"></i>
+            Transaksi Terakhir
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>No. Transaksi</th>
+                  <th>Tanggal</th>
+                  <th>Total</th>
+                  <th>Kasir</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-transaksi-terakhir">
+                <tr>
+                  <td colspan="4" class="text-center text-muted">
+                    <div class="py-3">
+                      <div class="spinner-border spinner-border-sm me-2"></div>
+                      Memuat data...
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
