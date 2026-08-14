@@ -29,11 +29,14 @@ app.use(express.json());          // parse body JSON
 app.use(express.urlencoded({ extended: true })); // parse form URL-encoded
 app.use(cookieParser());          // parse cookies
 
-// Sajikan file statis dari folder public/ (HTML, CSS, JS) - HANYA untuk development
-// Untuk production, frontend akan di-host terpisah di Vercel
-if (process.env.NODE_ENV !== 'production') {
-  app.use(express.static(path.join(__dirname, 'public')));
-}
+// ============================================================
+// Serve Frontend Static Files (untuk Railway deployment)
+// ============================================================
+// Railway akan serve frontend dari folder ../frontend/public
+const frontendPath = path.join(__dirname, '../frontend/public');
+app.use(express.static(frontendPath));
+
+console.log(`📁 Static files path: ${frontendPath}`);
 
 // ============================================================
 // Routing API
@@ -43,14 +46,31 @@ app.use('/api/barang',    barangRouter);
 app.use('/api/kategori',  kategoriRouter);
 app.use('/api/transaksi', transaksiRouter);
 
-// Root health check untuk Render
+// Root health check untuk Railway
 app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/public/login.html'));
+});
+
+// API health check
+app.get('/api', (req, res) => {
   res.json({ 
     success: true, 
     message: 'Sistem Inventaris API berjalan', 
     version: '1.0.0',
     environment: process.env.NODE_ENV || 'development'
   });
+});
+
+// ============================================================
+// Catch-all route - serve frontend untuk SPA routing
+// ============================================================
+app.get('*', (req, res, next) => {
+  // Skip jika request adalah untuk API
+  if (req.path.startsWith('/api')) {
+    return next();
+  }
+  // Serve frontend index/login page untuk semua route lainnya
+  res.sendFile(path.join(__dirname, '../frontend/public/login.html'));
 });
 
 // ============================================================

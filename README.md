@@ -1,181 +1,163 @@
 # 📦 Sistem Inventaris Barang
 
-Aplikasi CRUD Sistem Inventaris Barang dengan fitur Point of Sale (POS) menggunakan Node.js, Express, MySQL, dan Vanilla JavaScript.
+Aplikasi full-stack CRUD Sistem Inventaris dengan Point of Sale (POS) menggunakan Node.js, Express, MySQL, dan Vanilla JavaScript.
 
-## 🏗️ Arsitektur (Monorepo)
+## ✨ Features
 
-Project ini menggunakan **monorepo structure** dengan pemisahan frontend dan backend untuk deployment terpisah:
-
-```
-sistem-inventaris/
-├── frontend/          # Static files (HTML, CSS, JS) → Deploy ke Vercel
-│   ├── public/
-│   │   ├── css/
-│   │   ├── js/
-│   │   └── *.html
-│   ├── vercel.json
-│   └── README.md
-│
-├── backend/           # Node.js + Express API → Deploy ke Render
-│   ├── config/
-│   ├── middleware/
-│   ├── routes/
-│   ├── server.js
-│   ├── package.json
-│   ├── schema.sql
-│   └── README.md
-│
-└── README.md          # This file
-```
-
-## 🚀 Deployment Stack (FREE!)
-
-| Component | Platform | Tier | Keterangan |
-|-----------|----------|------|------------|
-| **Frontend** | [Vercel](https://vercel.com) | Free | Static site hosting |
-| **Backend** | [Render](https://render.com) | Free | Node.js hosting (sleep after 15min) |
-| **Database** | [Aiven](https://aiven.io) / [TiDB Cloud](https://tidbcloud.com) | Free | MySQL cloud (1GB) |
-
-## ⚡ Quick Start (Development)
-
-### 1. Clone Repository
-
-```bash
-git clone https://github.com/IanSapury/sistem-inventaris.git
-cd sistem-inventaris
-```
-
-### 2. Setup Backend
-
-```bash
-cd backend
-npm install
-cp .env.example .env
-# Edit .env dengan kredensial database Anda
-npm run dev
-```
-
-Backend akan berjalan di `http://localhost:3000`
-
-### 3. Setup Frontend
-
-```bash
-cd frontend/public
-# Gunakan live server atau:
-python -m http.server 8000
-# Atau
-npx http-server -p 8000
-```
-
-Frontend akan berjalan di `http://localhost:8000`
-
-**Penting**: Update `frontend/public/js/config.js` untuk development:
-```javascript
-API_BASE_URL: 'http://localhost:3000/api'
-```
-
-## 📚 Dokumentasi Deployment
-
-Untuk deployment ke production (Vercel + Render + Cloud MySQL), silakan baca:
-
-- **[Frontend Deployment Guide](./frontend/README.md)** - Deploy ke Vercel
-- **[Backend Deployment Guide](./backend/README.md)** - Deploy ke Render & Setup Database MySQL Cloud
-
-## ✨ Fitur
-
-### 🔐 Authentication & Authorization
-- Login sistem dengan JWT tokens
-- Multi-role: **Admin** (full access) dan **Kasir** (POS only)
-- Session management dengan cookie
-
-### 👨‍💼 Admin Features
-- **Dashboard Analytics**
-  - Real-time statistics (pendapatan, stok, transaksi)
-  - Charts analytics (Chart.js)
-  - Monitoring stok rendah
-  
-- **Manajemen Barang**
-  - CRUD barang lengkap
-  - Filter & search real-time
-  - Kategori produk
-  - Tracking stok otomatis
-
-- **Transaksi Masuk & Keluar**
-  - Pencatatan transaksi masuk/keluar
+- 🔐 **Authentication & Authorization** (JWT-based)
+  - Multi-role: Admin (full access) & Kasir (POS only)
+- 📊 **Admin Dashboard**
+  - Real-time analytics dengan Chart.js
+  - Monitoring stok & transaksi
+- 📦 **Manajemen Barang**
+  - CRUD lengkap dengan search & filter
+  - Kategori & tracking stok otomatis
+- 📥 **Transaksi Masuk & Keluar**
+  - Recording & history lengkap
   - Auto-update stok
-  - History lengkap
-
-### 🛒 Kasir Features
-- **Point of Sale (POS)**
-  - Interface modern & user-friendly
-  - Shopping cart real-time
-  - Auto-calculate & validasi stok
-  - Generate nomor transaksi otomatis
+- 🛒 **Point of Sale (POS)**
+  - Interface modern untuk kasir
+  - Shopping cart & auto-calculate
+  - Stock validation & receipt generation
 
 ## 🛠️ Tech Stack
 
-### Frontend
-- HTML5, CSS3, JavaScript (Vanilla)
-- Bootstrap 5 (UI Framework)
-- Chart.js (Data visualization)
-
-### Backend
+**Backend:**
 - Node.js + Express.js
-- MySQL (Database)
-- JWT (Authentication)
-- bcrypt (Password hashing)
+- MySQL (with connection pool)
+- JWT Authentication
+- bcrypt Password Hashing
 
-### Libraries
-- `express` - Web framework
-- `mysql2` - MySQL client
-- `cors` - CORS middleware
-- `dotenv` - Environment variables
-- `jsonwebtoken` - JWT authentication
-- `cookie-parser` - Cookie parsing
+**Frontend:**
+- HTML5, CSS3, Vanilla JavaScript
+- Bootstrap 5 + Bootstrap Icons
+- Chart.js for analytics
 
-## 👥 Default Users
+## 🚀 Quick Start (Local Development)
 
-Schema SQL sudah menyediakan user default:
+### Prerequisites
+- Node.js >= 18.x
+- MySQL >= 5.7
 
-### Admin
-- **Username**: `admin`
-- **Password**: `password123`
-- **Access**: Full (Dashboard, CRUD, History, Reports)
+### 1. Clone & Install
+```bash
+git clone https://github.com/IanSapury/sistem-inventaris.git
+cd sistem-inventaris
+cd backend
+npm install
+```
 
-### Kasir
-- **Username**: `kasir1` / `kasir2`
-- **Password**: `password123`
-- **Access**: POS Only
+### 2. Setup Database
+```bash
+# Login ke MySQL
+mysql -u root -p
 
-## 🔐 Security
+# Create database
+CREATE DATABASE db_inventaris;
+USE db_inventaris;
 
-- ✅ Password hashing dengan bcrypt
-- ✅ JWT-based authentication
-- ✅ CORS configuration
-- ✅ SQL injection protection (parameterized queries)
-- ✅ Environment variables untuk kredensial sensitif
-- ✅ HTTP-only cookies
-- ✅ Role-based access control (RBAC)
+# Import schema
+SOURCE schema.sql;
+EXIT;
+```
 
-## 📱 User Guide
+### 3. Configure Environment
+```bash
+cd backend
+cp .env.example .env
+# Edit .env dengan kredensial MySQL Anda
+```
 
-### Login
-1. Buka URL frontend Anda
-2. Masukkan username & password
-3. Sistem akan auto-redirect:
-   - **Admin** → Dashboard
-   - **Kasir** → POS
+**Minimal `.env`**:
+```env
+PORT=3000
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=db_inventaris
+JWT_SECRET=your-secret-key
+```
 
-### Admin - Dashboard
-- Lihat statistik real-time
-- Monitor stok rendah
-- Analisis penjualan dengan charts
+### 4. Run Application
+```bash
+cd backend
+npm run dev
+```
 
-### Kasir - Point of Sale
-1. Pilih produk dari grid
-2. Produk masuk ke cart otomatis
-3. Adjust quantity jika perlu
-4. Checkout dan proses pembayaran
+**Access**: `http://localhost:3000`
+
+**Login**:
+- Admin: `admin` / `password123`
+- Kasir: `kasir1` / `password123`
+
+📖 **Panduan lengkap**: [QUICK_START.md](./QUICK_START.md)
+
+## 🚂 Deploy to Railway
+
+Project ini sudah siap deploy ke Railway dengan struktur monorepo.
+
+### Quick Deploy Steps:
+
+1. **Push to GitHub**
+   ```bash
+   git push origin main
+   ```
+
+2. **Railway Dashboard**
+   - Login: https://railway.app/
+   - New Project → Deploy from GitHub
+   - Select: `IanSapury/sistem-inventaris`
+
+3. **Add MySQL Database**
+   - Add MySQL plugin
+   - Import `backend/schema.sql`
+
+4. **Done!** ✅
+   - Railway auto-deploy dari root
+   - URL: `https://your-app.up.railway.app`
+
+📖 **Panduan deployment lengkap**: [RAILWAY_DEPLOYMENT.md](./RAILWAY_DEPLOYMENT.md)
+
+## 📁 Project Structure
+
+```
+sistem-inventaris/
+├── package.json          # Root entry point (Railway)
+├── railway.toml          # Railway config
+├── nixpacks.toml         # Nixpacks config
+│
+├── backend/              # API Server
+│   ├── config/           # Database & config
+│   ├── middleware/       # Auth middleware
+│   ├── routes/           # API routes
+│   ├── server.js         # Entry point
+│   ├── schema.sql        # Database schema
+│   └── package.json      # Backend dependencies
+│
+└── frontend/             # Static Files
+    └── public/
+        ├── css/          # Stylesheets
+        ├── js/           # JavaScript
+        └── *.html        # Pages
+```
+
+## 🔐 Default Users
+
+Schema SQL sudah include user default:
+
+| Role | Username | Password |
+|------|----------|----------|
+| Admin | `admin` | `password123` |
+| Kasir | `kasir1` | `password123` |
+| Kasir | `kasir2` | `password123` |
+
+## 📚 Documentation
+
+- **[QUICK_START.md](./QUICK_START.md)** - Development lokal step-by-step
+- **[RAILWAY_DEPLOYMENT.md](./RAILWAY_DEPLOYMENT.md)** - Deploy ke Railway
+- **[backend/README.md](./backend/README.md)** - Backend documentation
+- **[frontend/README.md](./frontend/README.md)** - Frontend documentation
 
 ## 🎯 API Endpoints
 
@@ -184,66 +166,54 @@ Schema SQL sudah menyediakan user default:
 - `POST /api/auth/logout` - Logout
 - `GET /api/auth/me` - Get current user
 
-### Barang
-- `GET /api/barang` - Get all products
-- `GET /api/barang/search?q=keyword` - Search products
-- `POST /api/barang` - Create product
-- `PUT /api/barang/:id` - Update product
-- `DELETE /api/barang/:id` - Delete product
+### Barang (Items)
+- `GET /api/barang` - Get all items
+- `GET /api/barang/search?q=keyword` - Search items
+- `POST /api/barang` - Create item
+- `PUT /api/barang/:id` - Update item
+- `DELETE /api/barang/:id` - Delete item
 
-### Kategori
+### Kategori (Categories)
 - `GET /api/kategori` - Get all categories
 - `POST /api/kategori` - Create category
 
-### Transaksi
+### Transaksi (Transactions)
 - `GET /api/transaksi/masuk` - Get incoming transactions
 - `POST /api/transaksi/masuk` - Create incoming transaction
 - `GET /api/transaksi/keluar` - Get outgoing transactions
 - `POST /api/transaksi/keluar` - Create outgoing transaction
-- `GET /api/transaksi/stats` - Get dashboard statistics
+- `GET /api/transaksi/stats` - Get statistics
+
+## 🔒 Security
+
+- ✅ Password hashing dengan bcrypt
+- ✅ JWT-based authentication
+- ✅ SQL injection protection (parameterized queries)
+- ✅ Environment variables untuk credentials
+- ✅ Role-based access control (RBAC)
+
+## 💰 Railway Pricing
+
+Railway menyediakan **$5 credit gratis/bulan** yang cukup untuk:
+- 1 web app (Node.js)
+- 1 MySQL database
+- Hobby/personal projects
+
+Estimasi usage: ~$5/month untuk small projects.
 
 ## 🐛 Troubleshooting
 
-### Development Lokal
+### Local Development
+- **Database connection error**: Check `.env` credentials
+- **Port already in use**: Change `PORT` in `.env`
+- **Frontend tidak muncul**: Check `backend/server.js` static path
 
-**Database Connection Error:**
-```bash
-# Check MySQL service & verify credentials in .env
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=your_password
-```
+### Railway Deployment
+- **Build failed**: Check root `package.json` exists
+- **Database error**: Verify MySQL plugin added
+- **404 errors**: Check static files path in logs
 
-**Port Already in Use:**
-```bash
-# Change port in .env
-PORT=3001
-```
-
-### Production (Render/Vercel)
-
-**CORS Error:**
-- Pastikan `FRONTEND_URL` di Render environment variables sesuai dengan URL Vercel Anda
-- Format: `https://your-app.vercel.app` (tanpa trailing slash)
-
-**Backend Not Responding (Render Free Tier):**
-- Service sleep setelah 15 menit tidak ada request
-- Cold start pertama memakan waktu ~30 detik
-- Gunakan [UptimeRobot](https://uptimerobot.com/) untuk ping berkala
-
-**Database Connection Failed (Cloud MySQL):**
-- Pastikan kredensial database di Render environment benar
-- Aiven/TiDB biasanya allow all IPs, tapi cek whitelist jika perlu
-- Test koneksi dengan MySQL client terlebih dahulu
-
-## 📈 Future Enhancements
-
-- [ ] Export laporan ke Excel/PDF
-- [ ] Barcode scanner integration
-- [ ] Email notifications
-- [ ] Advanced reporting & analytics
-- [ ] Mobile app (React Native)
-- [ ] Multi-warehouse support
+📖 **Full troubleshooting**: [RAILWAY_DEPLOYMENT.md](./RAILWAY_DEPLOYMENT.md)
 
 ## 👨‍💻 Author
 
@@ -261,12 +231,11 @@ Pull requests are welcome! Untuk perubahan besar, mohon buat issue terlebih dahu
 ## 📞 Support
 
 Jika ada pertanyaan atau issue:
-1. Baca [Frontend README](./frontend/README.md) untuk deployment Vercel
-2. Baca [Backend README](./backend/README.md) untuk deployment Render
-3. Buat [GitHub Issue](https://github.com/IanSapury/sistem-inventaris/issues) jika masih ada masalah
+1. Baca dokumentasi ([QUICK_START.md](./QUICK_START.md) atau [RAILWAY_DEPLOYMENT.md](./RAILWAY_DEPLOYMENT.md))
+2. Buat [GitHub Issue](https://github.com/IanSapury/sistem-inventaris/issues)
 
 ---
 
 **Happy Coding! 🚀**
 
-*Sistem ini didesain untuk UMKM dengan fokus pada kemudahan deployment dan efisiensi operasional.*
+*Sistem ini ready untuk Railway deployment - push to GitHub and deploy in minutes!*

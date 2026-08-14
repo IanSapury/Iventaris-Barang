@@ -1,0 +1,23 @@
+{
+  "name": "sistem-inventaris-fullstack",
+  "version": "1.0.0",
+  "description": "Full-stack Sistem Inventaris Barang - Ready for Railway deployment",
+  "main": "backend/server.js",
+  "scripts": {
+    "postinstall": "cd backend && npm install",
+    "start": "cd backend && node server.js",
+    "dev": "cd backend && npm run dev"
+  },
+  "keywords": [
+    "inventaris",
+    "fullstack",
+    "express",
+    "mysql",
+    "railway"
+  ],
+  "author": "Ian Sapury",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.x"
+  }
+}
