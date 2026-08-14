@@ -109,8 +109,18 @@ app.use((error, req, res, next) => {
 // ============================================================
 // Jalankan server
 // ============================================================
-app.listen(PORT, () => {
-  console.log(`🚀 Server berjalan di http://localhost:${PORT}`);
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Server berjalan di port ${PORT}`);
   console.log(`   Mode    : ${process.env.NODE_ENV || 'development'}`);
-  console.log(`   Database: ${process.env.DB_NAME}@${process.env.DB_HOST}:${process.env.DB_PORT}`);
+  console.log(`   Node    : ${process.version}`);
+  console.log(`   Database: ${process.env.MYSQLDATABASE || process.env.DB_NAME || 'db_inventaris'}`);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('⚠️  SIGTERM received, shutting down gracefully...');
+  server.close(() => {
+    console.log('✅ Server closed');
+    process.exit(0);
+  });
 });
